@@ -23,7 +23,7 @@ ANS
 ANS
 
 2.1 ทำการสร้าง Key, Index ให้เหมาะสม (ส่งผลลัพท์เป็น SQL)
-ANS 
+ANS ALTER TABLE orders ADD INDEX(customer_id, order_id); (SQL file : develop.sql)
 
 2.2 ต้องการ Query ให้ได้ผลลัพท์ดังตารางข้างล่างนี้โดยใช้คำสั่ง SQL เพียงอย่างเดียว (ratio คือสัดส่วนของยอดซื้อของลูกค้า 1 คน หารด้วยยอดซื้อทั้งหมดของตาราง orders)
 ANS SELECT customer.id AS id, customer.name AS name, COUNT(DISTINCT orders.order_id) AS total_order, COUNT(orders.item) as total_item, SUM(orders.price) AS total_price, (SUM(orders.price) / (SELECT SUM(orders.price) FROM orders)) AS ratio
