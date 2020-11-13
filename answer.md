@@ -4,28 +4,13 @@
 ANS ให้ทำการดึงข้อมูลของ Product ด้วยเงื่อนไข Category ID เป็น 1 และ Active Status เป็น TRUE และทำการเรียงลำดับจากมากไปหาน้อยดูจาก Field created_timestamp และจะทำการดึงข้อมูล 100 ตัวตั้งแต่ตัวที่ 20
 
 1.2. จงยกตัวอย่างการ INSERT ข้อมูล กรณีที่มีข้อมูลที่เป็น primary key ซ้ำกัน
-ANS INSERT INTO customer(id, name) VALUES (1, "Lek"), INSERT INTO customer(id, name) VALUES (2, "Lek") หรือ INSERT INTO customer(id, name) VALUES (3, "Lek")
+ANS INSERT INTO customer(id, name) VALUES (1, "Lek"), (1, "Lek") 
 
 1.3. จงยกตัวอย่างการ INSERT ข้อมูล กรณีที่มีข้อมูล 100,000 row
-ANS DELIMITER //
-
-CREATE PROCEDURE MultipleInsert()
-BEGIN
-	SET @cnt = 0;
-	WHILE @cnt < 100000 DO
-		SET @cnt = @cnt + 1;
-		SET @insName = CONCAT('Test #', @cnt);
-	
-		INSERT INTO customer(name) values(@insName);	
-	END WHILE;
-END //
-
-DELIMITER ;
-
-CALL MultipleInsert();
+ANS จัดทำเป็นไฟล์ CSV และใช้ Command Line mysqlimport --ignore-lines=1 --fields-optionally-enclosed-by="\"" --fields-terminated-by=, --lines-terminated-by="\r\n" --user=root --password db table.csv, LOAD DATA INFILE 'customer.csv' INTO TABLE customer FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 ROWS; หรือใช้ GUI ของ PHPMyAdmin ก็สามารถใช้งานได้เช่นกัน
 
 1.4. จงยกตัวอย่างการ UPDATE ข้อมูล กรณีที่มีข้อมูล 3000 row และมี primary ที่แตกต่างกันทุก row
-ANS
+ANS จัดทำเป็นไฟล์ CSV และใช้ Command Line LOAD DATA INFILE 'customer.csv' REPLACE INTO TABLE customer FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 ROWS;
 
 1.5. Index คืออะไร และยกตัวอย่างวิธีการใช้งาน โดยมีตารางมี field ดังนี้ id, name, address, phone, email, active_status, created_timestamp, updated_timestamp
 ANS คือการระบุตำแหน่งในการเปรียบเทียบข้อมูล ซึ่งถ้าใช้งานจะทำให้ค้นหาด้วยข้อมูลนั้นๆ ได้รวดเร็วขึ้น / ALTER TABLE x ADD INDEX(id, active_status);
